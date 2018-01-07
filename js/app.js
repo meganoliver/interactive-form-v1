@@ -1,6 +1,10 @@
 let activityTime = [];
+let activities = [];
+let chosenActivity = "";
+let chosenTime = [];
 let totalCost = 0;
 let cost = 0;
+
 
 //Hide other role box unless required.
 $('#other-title').hide();
@@ -33,23 +37,41 @@ $('#design').change(function() {
 });
 
 //Register for Activities Section
-const activities = [];
+
+//Put all activity times into an array
 $('.activities label').each(function() {
 	activities.push($(this).text());
+	let hyphen = $(this).text().indexOf("—");
+	let comma = $(this).text().indexOf(",");
+	let time = $(this).text().slice(hyphen, comma);
+	activityTime.push(time);
 });
 
+console.log(activities);
+console.log(activityTime);
+
 $('.activities label').change(function() {	
-	let activity = $(this).text();
-	console.log(activity);
-	activityTime = activity.match(new RegExp(/^-$,/));
-	console.log(activityTime);
+	chosenActivity = $(this).text();
+	chosenTime = [];
+	let hyphen = chosenActivity.indexOf("—");
+	let comma = chosenActivity.indexOf(",");
+	let time = chosenActivity.slice(hyphen, comma);
+	chosenTime.push(time);
+	console.log(chosenTime);
+
+		//disable events at same time
+	$(activityTime).each(function() {
+		console.log($(this).join());
+		if(chosenTime === $(this)) {
+			console.log("conflict!");
+			$(this).attr("disabled", true);
+		}
+	});
 });
-	//disable events at same time
 
 	//Update total cost
 	
 //Payment Info
-console.log($('#payment option').eq(1).val());
 $('#payment option').eq(1).attr({selected: "selected"});
 $('p').hide();
 
@@ -83,9 +105,9 @@ $('button').click(function() {
 
 
 	//Activities
-	if(($'.activities.required :checkbox:checked').length < 1) {
-		$('.activities').css("border", "1px solid red");
-	}
+// 	if(($'.activities.required :checkbox:checked').length < 1) {
+// 		$('.activities').css("border", "1px solid red");
+// 	}
 
 });
 
