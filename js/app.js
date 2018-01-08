@@ -40,36 +40,30 @@ $('#design').change(function() {
 
 //Put all activity times into an array
 $('.activities label').each(function() {
-	activities.push($(this).text());
 	let hyphen = $(this).text().indexOf("—");
 	let comma = $(this).text().indexOf(",");
 	let time = $(this).text().slice(hyphen, comma);
 	activityTime.push(time);
 });
 
-console.log(activities);
-console.log(activityTime);
-
-$('.activities label').change(function() {	
+$('.activities label').click(function() {	
 	chosenActivity = $(this).text();
-	chosenTime = [];
-	let hyphen = chosenActivity.indexOf("—");
-	let comma = chosenActivity.indexOf(",");
-	let time = chosenActivity.slice(hyphen, comma);
-	chosenTime.push(time);
-	console.log(chosenTime);
-
-		//disable events at same time
-	$(activityTime).each(function() {
-		console.log($(this).join());
-		if(chosenTime === $(this)) {
+		chosenTime = [];
+		let hyphen = chosenActivity.indexOf("—");
+		let comma = chosenActivity.indexOf(",");
+		let time = chosenActivity.slice(hyphen, comma);
+		chosenTime.push(time);
+		schedule.push(time);
+		console.log(chosenTime);
+		console.log(schedule);
+});
+console.log(activityTime);
+$(activityTime).each(function() {
+		console.log($(this));
+		if($(this) === chosenTime) {
 			console.log("conflict!");
-			$(this).attr("disabled", true);
 		}
 	});
-});
-
-	//Update total cost
 	
 //Payment Info
 $('#payment option').eq(1).attr({selected: "selected"});
