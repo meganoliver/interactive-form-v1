@@ -159,8 +159,8 @@ $('.activities').change(function() {
 		$('#nameAlert').hide();
 		$('#emailAlert').hide();
 		$('#activitiesAlert').hide();
-		e.preventDefault();
 		if($('#name').val() === "") {
+			e.preventDefault();
 			$('#name').css("borderColor", "red");
 			$('#name').prev().append(`<p id="nameAlert">Please enter your name.</p>`);
 			$('#nameAlert').css("color", "red");
@@ -170,6 +170,7 @@ $('.activities').change(function() {
 		}
 //----------------ACTIVITIES VALIDATION-------------
 		if($('.activities input:checked').length < 1) {
+			e.preventDefault();
 			$('.activities').prepend(`<p id="activitiesAlert">Please select at least one activity.</p>`);
 			$('#activitiesAlert').css("color", "red");
 		} else {
@@ -181,10 +182,14 @@ $('.activities').change(function() {
 			if($ccInput.length > 12 && $ccInput.length < 17 && integerCheck($ccInput)) {	
 				$('#cc-num').css("borderColor", "black");	
 				$('.col-6 label').text("Card Number").css("color", "black");
+			} else if ($ccInput.length === 0) {
+				$('.col-6 label').text("Please enter a card number.").css("color", "red");
 			} else if(integerCheck($ccInput) === false) {
+				e.preventDefault();
 				$('#cc-num').css("borderColor", "red");
 				$('.col-6 label').text("Card Number must only contain numbers.").css("color", "red");
 			} else if($ccInput.length < 13 || $ccInput.length > 16)  {
+				e.preventDefault();
 				$('#cc-num').css("borderColor", "red");
 				$('.col-6 label').text("Card Number must be 13-16 digits long.").css("color", "red");
 				
@@ -193,6 +198,7 @@ $('.activities').change(function() {
 			if($zipInput.length === 5 && integerCheck($zipInput)) {
 				$('#zip').css("borderColor", "black").css("color", "black");
 			} else {
+				e.preventDefault();
 				$('#zip').css("borderColor", "red");
 					
 			}
@@ -200,6 +206,7 @@ $('.activities').change(function() {
 			if($cvvInput.length === 3 && integerCheck($cvvInput)) {
 				$('#cvv').css("borderColor", "black").css("color", "black");
 			} else {
+				e.preventDefault();
 				$('#cvv').css("borderColor", "red");				
 			}
 		}
