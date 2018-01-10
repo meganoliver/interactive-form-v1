@@ -2,7 +2,6 @@
 	const activityInputs = [];
 	let activityTime = [];
 	let $activities = [];
-	let chosenActivity = "";
 	let schedule = [];
 	let chosenTime = "";
 
@@ -23,7 +22,13 @@ const integerCheck = (number) => {
 	return regex.test(number);
 }
 
-
+function timeCheck() {
+	for(let i = 0; i < activityTime.length; i++) {
+		if(activityTime[i] === chosenTime) {
+			$(('.activities input')[i]).prop('disabled', true);	
+		}
+	}
+};
 
 	//---------------------------HIDE OTHER ROLE INPUT-------------------------------
 	$('#other-title').hide();
@@ -57,41 +62,47 @@ const integerCheck = (number) => {
 
 	//------------------------------REGISTER FOR ACTIVITIES---------------------
 
+//Create an array of all activities
 $('.activities label').each(function() {
 	$activities.push($(this).text());
 });
 
+//Create an array of all checkboxes
 $('input').each(function() {
 	if($(this).is(':checkbox')) {
 		activityInputs.push($(this));
 	}
 });
+
+//----------------------------DEACTIVATE TIME OVERLAPS------------------------------
 	//Put all activity times into an array
-	// $('.activities label').each(function() {
-	// 	let hyphen = $(this).text().indexOf("—");
-	// 	let comma = $(this).text().indexOf(",");
-	// 	let time = $(this).text().slice(hyphen, comma);
-	// 	activityTime.push(time);
-	// });
+$('.activities label').each(function() {
+	let hyphen = $(this).text().indexOf("—");
+	let comma = $(this).text().indexOf(",");
+	let time = $(this).text().slice(hyphen, comma);
+	activityTime.push(time);
+});
 
-	// function timeCheck() {
-	// 	for(let i = 0; i < activityTime.length; i++) {
-	// 		if(activityTime[i] === chosenTime) {
-	// 			$(('.activities input')[i]).prop('disabled', true);	
-	// 		}
-	// 	}
-	// };
+$('.activities label').click(function(e) {
+	let chosenActivity = e.currentTarget.outerText;
+	chosenTime = "";
+	let hyphen = chosenActivity.indexOf("—");
+	let comma = chosenActivity.indexOf(",");
+	let time = chosenActivity.slice(hyphen, comma);
+	chosenTime = time;
 
-	// $('.activities label').click(function() {	
-	// 	chosenActivity = this.innerHTML;
-	// 		chosenTime = "";
-	// 		let hyphen = chosenActivity.indexOf("—");
-	// 		let comma = chosenActivity.indexOf(",");
-	// 		let time = chosenActivity.slice(hyphen, comma);
-	// 		chosenTime += time;
-	// 		schedule.push(time);
-	// 		timeCheck();
-	// });
+	for(let i = 0; i < $('.activities input').length; i++) {
+		console.log($('.activities label')[i]);
+		console.log(chosenTime);
+		console.log(activityTime[i]);
+		if(activityTime[i] === chosenTime) {
+			console.log("conflict!");
+			$('.activities label')[i].css("backgroundColor", "grey");
+		}//end if match
+		
+	} //end for loop
+		
+});
 
 //----------------------------------COST CALCULATIONS------------------------
 $('.activities').append(`<span id="cost">Total Cost = $${totalCost}`).css("color", "black");
@@ -100,7 +111,6 @@ for(let i = 0; i < $activities.length; i++) {
 	cost = parseInt($activities[i].slice(($activities[i].length) - 3));
 	costArray.push(cost);
 }
-console.log(costArray);
 $('.activities').change(function() {
 	$('#cost').remove();
 	totalCost = 0;
