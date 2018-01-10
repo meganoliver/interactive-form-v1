@@ -1,13 +1,16 @@
 
 	const activityInputs = [];
-	let activityTime = [];
 	let $activities = [];
-	let schedule = [];
-	let chosenTime = "";
-
 	let costArray = [];
 	let totalCost = 0;
 	let cost = 0;
+	const jsFrame = document.getElementsByName("js-frameworks")[0];
+	const jsLibs = document.getElementsByName("js-libs")[0];
+	const express = document.getElementsByName("express")[0];
+	const node = document.getElementsByName("node")[0];
+	const buildTools = document.getElementsByName("build-tools")[0];
+	const npm = document.getElementsByName("npm")[0];
+	console.log(jsFrame);
 
 
 //----------------------------------FUNCTIONS-------------------------
@@ -75,34 +78,33 @@ $('input').each(function() {
 });
 
 //----------------------------DEACTIVATE TIME OVERLAPS------------------------------
-	//Put all activity times into an array
-$('.activities label').each(function() {
-	let hyphen = $(this).text().indexOf("—");
-	let comma = $(this).text().indexOf(",");
-	let time = $(this).text().slice(hyphen, comma);
-	activityTime.push(time);
+$('.activities input').change(function() {
+	if(jsFrame.checked) {
+		express.setAttribute("disabled", true);
+	}	else {
+		express.removeAttribute("disabled");
+	}
+
+	if(express.checked) {
+		jsFrame.setAttribute("disabled", true);
+	}	else {
+		jsFrame.removeAttribute("disabled", false);
+	}
+
+	if(jsLibs.checked) {
+		node.setAttribute("disabled", true);
+	}	else {
+		node.removeAttribute("disabled", false);
+	}
+
+	if(node.checked) {
+		jsLibs.setAttribute("disabled", true);
+	}	else {
+		jsLibs.removeAttribute("disabled", false);
+	}
+	
 });
 
-$('.activities label').click(function(e) {
-	let chosenActivity = e.currentTarget.outerText;
-	chosenTime = "";
-	let hyphen = chosenActivity.indexOf("—");
-	let comma = chosenActivity.indexOf(",");
-	let time = chosenActivity.slice(hyphen, comma);
-	chosenTime = time;
-
-	for(let i = 0; i < $('.activities input').length; i++) {
-		console.log($('.activities label')[i]);
-		console.log(chosenTime);
-		console.log(activityTime[i]);
-		if(activityTime[i] === chosenTime) {
-			console.log("conflict!");
-			$('.activities label')[i].css("backgroundColor", "grey");
-		}//end if match
-		
-	} //end for loop
-		
-});
 
 //----------------------------------COST CALCULATIONS------------------------
 $('.activities').append(`<span id="cost">Total Cost = $${totalCost}`).css("color", "black");
