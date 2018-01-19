@@ -130,7 +130,10 @@ $('.activities').change(function() {
 	$('p').hide();
 
 	$('#payment').change(function() {
-		if($(this).val() === "credit card") {
+		if($(this).val() === "select_method"){
+			$('p').hide();
+			$('#credit-card').hide();
+		} else if($(this).val() === "credit card") {
 			$('p').hide();
 			$('#credit-card').show();
 		} else if ($(this).val() === "paypal") {
@@ -168,6 +171,11 @@ $('.activities').change(function() {
 			$('#name').css("border", "none");
 			$('#nameAlert').hide();
 		}
+
+//-----------------------EMAIL VALIDATION--------------
+
+	emailVerification();
+
 //----------------ACTIVITIES VALIDATION-------------
 		if($('.activities input:checked').length < 1) {
 			e.preventDefault();
@@ -176,6 +184,13 @@ $('.activities').change(function() {
 		} else {
 			$('#activitiesAlert').hide();
 		}
+
+//-----------------PAYMENT VALIDATION-----------------------------
+
+		if('#payment option[value="select_method"]') {
+			$('#payment').append(`<p>Please select a payment method.</p>`).css("color", "red");
+		}
+
 //-----------------CREDIT CARD VALIDATION----------------------------------
 		if($('#payment option[value="credit card"]')) {
 			let $ccInput = $('#cc-num').val();
@@ -214,8 +229,7 @@ $('.activities').change(function() {
 	});
 
 //------------------EMAIL VALIDATION---------------------------------------
-		
-	$('#mail').keypress(function() { 
+	const emailVerification = function() {
 		let $email = $('#mail').val();
 		let emailCheck = validateEmail($email);
 		console.log($('#emailAlert'));
@@ -228,6 +242,11 @@ $('.activities').change(function() {
 			$('#mail').prev().append(`<p id="emailAlert">Please enter a valid email address.</p>`);
 			$('#emailAlert').css("color", "red");
 		}	
+	}
+
+
+	$('#mail').keypress(function() { 
+		emailVerification();
 	});
 
 
