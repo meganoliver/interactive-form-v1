@@ -12,6 +12,7 @@
 	const npm = document.getElementsByName("npm")[0];
 	console.log(jsFrame);
 
+	$('#name').focus();
 
 //----------------------------------FUNCTIONS-------------------------
 
@@ -128,10 +129,13 @@ $('.activities').change(function() {
 
 	$('#payment option').eq(1).attr({selected: "selected"});
 	$('p').hide();
+	$('p').first().addClass("paypal");
+	$('p').last().addClass("bitcoin");
 
 	$('#payment').change(function() {
 		if($(this).val() === "select_method"){
 			$('p').hide();
+			$('#selectPayment').show();
 			$('#credit-card').hide();
 		} else if($(this).val() === "credit card") {
 			$('p').hide();
@@ -139,15 +143,16 @@ $('.activities').change(function() {
 		} else if ($(this).val() === "paypal") {
 			$('#credit-card').hide();
 			$('p').hide();
-			$('p').first().show();
+			$('.paypal').show();
 		} else if($(this).val() === "bitcoin"){
 			$('#credit-card').hide();
 			$('p').hide();
-			$('p').last().show();
-		} else {
-			$('#payment option').eq(1).attr({selected: "selected"});
-			$('p').hide();
-		}
+			$('.bitcoin').show();
+		} 
+		//else {
+		// 	$('#payment option').eq(1).attr({selected: "selected"});
+		// 	$('p').hide();
+		// }
 	});
 
 	//--------------------------------------FORM VALIDATION---------------------
@@ -188,8 +193,11 @@ $('.activities').change(function() {
 //-----------------PAYMENT VALIDATION-----------------------------
 
 		if('#payment option[value="select_method"]') {
-			$('#payment').append(`<p>Please select a payment method.</p>`).css("color", "red");
+			e.preventDefault();
+			$('#payment').parent().prepend(`<div><p id="selectPayment">Please select a payment method.</p></div>`);
+			$('#selectPayment').css("color", "red");
 		}
+		
 
 //-----------------CREDIT CARD VALIDATION----------------------------------
 		if($('#payment option[value="credit card"]')) {
