@@ -134,25 +134,27 @@ $('.activities').change(function() {
 
 	$('#payment').change(function() {
 		if($(this).val() === "select_method"){
-			$('p').hide();
-			$('#selectPayment').show();
+			$('#payment').parent().prepend(`<div id="selectPayment"><p>Please select a payment method.</p></div>`);
+			$('#selectPayment').css("color", "red");
+			$('.paypal').hide();
+			$('.bitcoin').hide();
 			$('#credit-card').hide();
 		} else if($(this).val() === "credit card") {
-			$('p').hide();
+			$('.bitcoin').hide();
+			$('.paypal').hide();
+			$('#selectPayment').hide();
 			$('#credit-card').show();
 		} else if ($(this).val() === "paypal") {
 			$('#credit-card').hide();
-			$('p').hide();
+			$('.bitcoin').hide();
+			$('#selectPayment').hide();
 			$('.paypal').show();
 		} else if($(this).val() === "bitcoin"){
 			$('#credit-card').hide();
-			$('p').hide();
+			$('#selectPayment').hide();
+			$('.paypal').hide();
 			$('.bitcoin').show();
 		} 
-		//else {
-		// 	$('#payment option').eq(1).attr({selected: "selected"});
-		// 	$('p').hide();
-		// }
 	});
 
 	//--------------------------------------FORM VALIDATION---------------------
@@ -167,6 +169,9 @@ $('.activities').change(function() {
 		$('#nameAlert').hide();
 		$('#emailAlert').hide();
 		$('#activitiesAlert').hide();
+		if($('#payment option[value="select_method"]')) {
+			e.preventDefault();
+		}
 		if($('#name').val() === "") {
 			e.preventDefault();
 			$('#name').css("borderColor", "red");
@@ -192,11 +197,6 @@ $('.activities').change(function() {
 
 //-----------------PAYMENT VALIDATION-----------------------------
 
-		if('#payment option[value="select_method"]') {
-			e.preventDefault();
-			$('#payment').parent().prepend(`<div><p id="selectPayment">Please select a payment method.</p></div>`);
-			$('#selectPayment').css("color", "red");
-		}
 		
 
 //-----------------CREDIT CARD VALIDATION----------------------------------
